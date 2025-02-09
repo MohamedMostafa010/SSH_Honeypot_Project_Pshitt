@@ -1,0 +1,17 @@
+## License & Contribution  
+
+This project is licensed under the **MIT License**, meaning you are free to use, modify, and distribute it as long as the original credit remains intact.  
+
+### Improve & Extend 🚀  
+
+The **main component** of this project is the **Terraform script (`SSH_Honeypot_Deploy.tf`)**, which automates the deployment of the SSH honeypot on **Azure**.  
+
+We encourage developers, security researchers, and enthusiasts to:  
+
+- **Enhance the Terraform script** to add more cloud platforms or security features  
+- **Integrate new logging & monitoring tools** for better attack visibility  
+- **Improve the honeypot's deception techniques** to capture more attacker data  
+
+If you make improvements, consider **sharing them** with the community by forking the repo or submitting a pull request.  
+
+📢 **Fork & Contribute:** [GitHub Repository](https://github.com/MohamedMostafa010/SSH_Honeypot_Project_Pshitt.git)  
