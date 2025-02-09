@@ -126,18 +126,8 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    ```
 - When you deploy a honeypot (like Pshitt in your case), it disables the real SSH service and generates a new SSH host key for the fake SSH server. This is why the SSH client on your local machine detects a host key change and warns you about a potential security risk.
 
-3. **Trying Login Attempts**
+2. **Trying Login Attempts**
    ```sh
-   C:\Users\moham>ssh user@13.88.14.101
-   Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-   Warning: Permanently added '13.88.14.101' (RSA) to the list of known hosts.
-   user@13.88.14.101's password:
-   Permission denied, please try again.
-   user@13.88.14.101's password:
-   Permission denied, please try again.
-   user@13.88.14.101's password:
-   user@13.88.14.101: Permission denied (password,publickey).
-
    C:\Users\moham>ssh 13.88.14.101
    The authenticity of host '13.88.14.101 (13.88.14.101)' can't be established.
    RSA key fingerprint is SHA256:OhNL391d/beeFnxxg18AwWVYTAHww+D4djEE7Co0Yng.
@@ -160,7 +150,7 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    moham@13.88.14.101: Permission denied (password,publickey).
    ```
    
-4. **Captured Credentials/Information (Image and Text have the same data)**
+3. **Captured Credentials/Information (Image and Text have the same data)**
    <img src="assets/6-Captured Information.png" alt="Step 6 - Captured Information" width="500">
    ```sh
    {"username": "user", "password": "CoMpLeEx!", "src_ip": "156.214.155.185", "src_port": 64641, "timestamp": "2025-02-09T04:04:42.519138", "software_version": "OpenSSH_for_Windows_9.5", "cipher": "aes128-ctr", "mac": "hmac-sha2-256-etm@openssh.com", "try": 1, "abuseipdb": {"ipAddress": "156.214.155.185", "isPublic": true, "ipVersion": 4, "isWhitelisted": null, "abuseConfidenceScore": 0, "countryCode": "EG", "usageType": "Fixed Line ISP", "isp": "TE Data", "domain": "tedata.net", "hostnames": ["host-156.214.185.155-static.tedata.net"], "isTor": false, "totalReports": 0, "numDistinctUsers": 0, "lastReportedAt": null}}
