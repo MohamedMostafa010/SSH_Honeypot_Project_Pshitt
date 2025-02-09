@@ -100,7 +100,33 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
 
 ## Sample of Data when Executing
 
-1. **Trying Login Attempts**
+1. **Remove the Old SSH Host Key Entry from the **known_hosts file****
+   ```sh
+   C:\Users\moham>ssh 13.88.14.101
+   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+   @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+   IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+   Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+   It is also possible that a host key has just been changed.
+   The fingerprint for the RSA key sent by the remote host is
+   SHA256:OhNL391d/beeFnxxg18AwWVYTAHww+D4djEE7Co0Yng.
+   Please contact your system administrator.
+   Add correct host key in C:\\Users\\moham/.ssh/known_hosts to get rid of this message.
+   Offending ECDSA key in C:\\Users\\moham/.ssh/known_hosts:21
+   Host key for 13.88.14.101 has changed and you have requested strict checking.
+   Host key verification failed.
+   
+   C:\Users\moham>ssh-keygen -R 13.88.14.101
+   # Host 13.88.14.101 found: line 19
+   # Host 13.88.14.101 found: line 20
+   # Host 13.88.14.101 found: line 21
+   C:\Users\moham/.ssh/known_hosts updated.
+   Original contents retained as C:\Users\moham/.ssh/known_hosts.old
+   ```
+- When you deploy a honeypot (like Pshitt in your case), it disables the real SSH service and generates a new SSH host key for the fake SSH server. This is why the SSH client on your local machine detects a host key change and warns you about a potential security risk.
+
+3. **Trying Login Attempts**
    ```sh
    C:\Users\moham>ssh user@13.88.14.101
    Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
@@ -111,9 +137,30 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    Permission denied, please try again.
    user@13.88.14.101's password:
    user@13.88.14.101: Permission denied (password,publickey).
+
+   C:\Users\moham>ssh 13.88.14.101
+   The authenticity of host '13.88.14.101 (13.88.14.101)' can't be established.
+   RSA key fingerprint is SHA256:OhNL391d/beeFnxxg18AwWVYTAHww+D4djEE7Co0Yng.
+   This host key is known by the following other names/addresses:
+       C:\Users\moham/.ssh/known_hosts:9: 192.168.219.128
+       C:\Users\moham/.ssh/known_hosts:10: 13.93.216.131
+       C:\Users\moham/.ssh/known_hosts:11: 13.64.65.74
+       C:\Users\moham/.ssh/known_hosts:12: 13.64.210.160
+       C:\Users\moham/.ssh/known_hosts:15: 138.91.158.207
+       C:\Users\moham/.ssh/known_hosts:16: 138.91.154.112
+       C:\Users\moham/.ssh/known_hosts:17: 13.73.54.181
+       C:\Users\moham/.ssh/known_hosts:18: 13.88.14.101
+   Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+   Warning: Permanently added '13.88.14.101' (RSA) to the list of known hosts.
+   moham@13.88.14.101's password:
+   Permission denied, please try again.
+   moham@13.88.14.101's password:
+   Permission denied, please try again.
+   moham@13.88.14.101's password:
+   moham@13.88.14.101: Permission denied (password,publickey).
    ```
    
-2. **Captured Credentials/Information (Image and Text have the same data)**
+4. **Captured Credentials/Information (Image and Text have the same data)**
    <img src="assets/6-Captured Information.png" alt="Step 6 - Captured Information" width="500">
    ```sh
    {"username": "user", "password": "CoMpLeEx!", "src_ip": "156.214.155.185", "src_port": 64641, "timestamp": "2025-02-09T04:04:42.519138", "software_version": "OpenSSH_for_Windows_9.5", "cipher": "aes128-ctr", "mac": "hmac-sha2-256-etm@openssh.com", "try": 1, "abuseipdb": {"ipAddress": "156.214.155.185", "isPublic": true, "ipVersion": 4, "isWhitelisted": null, "abuseConfidenceScore": 0, "countryCode": "EG", "usageType": "Fixed Line ISP", "isp": "TE Data", "domain": "tedata.net", "hostnames": ["host-156.214.185.155-static.tedata.net"], "isTor": false, "totalReports": 0, "numDistinctUsers": 0, "lastReportedAt": null}}
