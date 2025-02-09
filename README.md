@@ -153,6 +153,44 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
 
 - Due to an issue verifying my **Egyptian phone number**, I couldn't create a standard Azure account. As a result, I had to use the **Microsoft Azure Learn Sandbox**, which comes with certain limitations, such as restricted resource availability and temporary environments that auto-expire.
 
+## **Sample of Possible Errors and Solutions**
+
+- **Error: 403 Forbidden - RequestDisallowedByPolicy**
+  ```sh
+   │ Error: creating Network Interface (Subscription: "4b5eb158-8ae8-49e2-aad4-93c5d851be75"
+   │ Resource Group Name: "learn-ff5d90b3-04aa-428d-b669-a4c715a2346b"
+   │ Network Interface Name: "honeypot-nic"): performing CreateOrUpdate: unexpected status 403 (403 Forbidden) with error:
+   │ RequestDisallowedByPolicy: Resource 'honeypot-nic' was disallowed by policy.
+  ```
+   - Azure Policy is restricting the creation of specific resources in the subscription.
+   - If you are using an Azure Sandbox, deactivate the current one and activate a new sandbox. This will give you a different Subscription ID with different policies. Most probable the issue exists in the subscription policies enforced.
+- **Error: Error obtaining Authorization Token**
+   ```sh
+   │ Error: Error obtaining Authorization Token: Error: NoCredentialProviders: no valid providers in chain.
+   ``` 
+   - Terraform cannot authenticate with Azure due to missing credentials.
+   - **Ensure Azure CLI is Logged In:**
+     ```sh
+     az login
+     ```
+   - **Set the Subscription ID (if multiple accounts are present):**
+     ```sh
+     az account set --subscription "YOUR_SUBSCRIPTION_ID"
+     ```
+- **Error: A resource with the ID already exists**
+  ```sh
+  │ Error: A resource with the ID already exists - to be managed via Terraform this resource needs to be imported into the State.
+  ```
+   - Terraform is trying to create a resource that already exists in Azure.
+   - **Import the Existing Resource into Terraform State:**
+     ```sh
+     terraform import azurerm_resource_group.example /subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/my-rg
+     ```
+   - **If the Resource Should Not Exist, Manually Delete It:**
+     ```sh
+     az resource delete --ids /subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/my-rg
+     ```
+     
 ## **Contributing**
 
 - Contributions are welcome! If you have suggestions or improvements, feel free to open a pull request or issue on the repository.
