@@ -190,8 +190,8 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
      ```sh
      az resource delete --ids /subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/my-rg
      ```
-  - **Python Errors**
-     - Ensure **Dependencies** are Installed.
+- **Python Errors**
+  - Ensure **Dependencies** are Installed.
      
 ## **Contributing**
 
