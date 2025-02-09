@@ -142,3 +142,12 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    - Interact with the system as if you were physically connected to the machine  
 
 - This method ensures that even with **SSH disabled**, you still have a way to access and manage the honeypot. 🚀
+
+## **Contributing**
+
+- Contributions are welcome! If you have suggestions or improvements, feel free to open a pull request or issue on the repository.
+
+## **License**
+
+- This project is released under the **MIT License**.
+
