@@ -96,7 +96,7 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    chmod +x pshitt.py
    sudo ./pshitt.py -p 22 -o /home/azureuser/credentials.json
    ```
-- Now the Honeypot Tool "AbuseIPDB_pshitt is Listening on Port 22 (Acting as it is a real SSH Server)
+- Now the Honeypot Tool "AbuseIPDB_pshitt" is Listening on Port 22 (Acting as it is a real SSH Server)
 
 ## Sample of Data when Executing
 
@@ -120,6 +120,12 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    {"username": "user", "password": "WrOnGpAsS", "src_ip": "156.214.155.185", "src_port": 64641, "timestamp": "2025-02-09T04:04:49.241704", "software_version": "OpenSSH_for_Windows_9.5", "cipher": "aes128-ctr", "mac": "hmac-sha2-256-etm@openssh.com", "try": 2, "abuseipdb": {"ipAddress": "156.214.155.185", "isPublic": true, "ipVersion": 4, "isWhitelisted": null, "abuseConfidenceScore": 0, "countryCode": "EG", "usageType": "Fixed Line ISP", "isp": "TE Data", "domain": "tedata.net", "hostnames": ["host-156.214.185.155-static.tedata.net"], "isTor": false, "totalReports": 0, "numDistinctUsers": 0, "lastReportedAt": null}}
    {"username": "user", "password": "It_Is_A_Honeypot$$", "src_ip": "156.214.155.185", "src_port": 64641, "timestamp": "2025-02-09T04:05:07.210905", "software_version": "OpenSSH_for_Windows_9.5", "cipher": "aes128-ctr", "mac": "hmac-sha2-256-etm@openssh.com", "try": 3, "abuseipdb": {"ipAddress": "156.214.155.185", "isPublic": true, "ipVersion": 4, "isWhitelisted": null, "abuseConfidenceScore": 0, "countryCode": "EG", "usageType": "Fixed Line ISP", "isp": "TE Data", "domain": "tedata.net", "hostnames": ["host-156.214.185.155-static.tedata.net"], "isTor": false, "totalReports": 0, "numDistinctUsers": 0, "lastReportedAt": null}}
    ```
+- The honeypot logs crucial attack data, including source IPs, usernames, passwords, encryption methods, and software versions. This information can help in:
+
+   - **Threat Intelligence:** Identifying attack patterns and malicious IPs.
+   - **Incident Response:** Enriching security logs and responding to threats proactively.
+   - **Security Research:** Studying brute-force techniques and attacker behavior.
+   - **IP Reputation Analysis:** Reporting malicious IPs to services like AbuseIPDB to improve global cybersecurity.
 
 ## **Accessing the Honeypot After Disabling SSH**  
 
@@ -142,6 +148,10 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    - Interact with the system as if you were physically connected to the machine  
 
 - This method ensures that even with **SSH disabled**, you still have a way to access and manage the honeypot. 🚀
+
+## **Limitations and Constraints**
+
+- Due to an issue verifying my **Egyptian phone number**, I couldn't create a standard Azure account. As a result, I had to use the **Microsoft Azure Learn Sandbox**, which comes with certain limitations, such as restricted resource availability and temporary environments that auto-expire.
 
 ## **Contributing**
 
