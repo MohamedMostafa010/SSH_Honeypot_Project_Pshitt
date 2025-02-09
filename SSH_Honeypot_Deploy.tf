@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.0"
+      version = "~> 4.0"  # Specifies the version of the Azure provider
     }
   }
 }
@@ -10,35 +10,40 @@ terraform {
 provider "azurerm" {
   features {}
 
-  subscription_id = "293caa52-ebff-42e6-9e6f-48771148aeed"
+  subscription_id = "293caa52-ebff-42e6-9e6f-48771148aeed"  # Change this to your Azure subscription ID
 }
 
+# Virtual Network Configuration
 resource "azurerm_virtual_network" "honeypot_vnet" {
   name                = "honeypot-vnet"
-  location            = "West US"
-  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"
-  address_space       = ["10.0.0.0/16"]
+  location            = "West US"  # Change this to your desired Azure region
+  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"  # Change this to your resource group name
+  address_space       = ["10.0.0.0/16"]  # Defines the address space for the virtual network
 }
 
+# Subnet Configuration
 resource "azurerm_subnet" "honeypot_subnet" {
   name                 = "honeypot-subnet"
   resource_group_name  = azurerm_virtual_network.honeypot_vnet.resource_group_name
   virtual_network_name = azurerm_virtual_network.honeypot_vnet.name
-  address_prefixes     = ["10.0.1.0/24"]
+  address_prefixes     = ["10.0.1.0/24"]  # Defines the subnet range within the VNet
 }
 
+# Public IP Address
 resource "azurerm_public_ip" "honeypot_public_ip" {
   name                = "honeypot-public-ip"
-  location            = "West US"
-  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"
-  allocation_method   = "Static"
+  location            = "West US"  # Change this if needed
+  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"  # Change this to your resource group name
+  allocation_method   = "Static"  # Static IP allocation
 }
 
+# Network Security Group (NSG)
 resource "azurerm_network_security_group" "honeypot_nsg" {
   name                = "honeypot-nsg"
-  location            = "West US"
-  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"
+  location            = "West US"  # Change this if needed
+  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"  # Change this to your resource group name
 
+  # Allow SSH traffic
   security_rule {
     name                       = "AllowSSH"
     priority                   = 1001
@@ -51,6 +56,7 @@ resource "azurerm_network_security_group" "honeypot_nsg" {
     destination_address_prefix = "*"
   }
 
+  # Allow HTTP traffic
   security_rule {
     name                       = "AllowHTTP"
     priority                   = 1002
@@ -63,6 +69,7 @@ resource "azurerm_network_security_group" "honeypot_nsg" {
     destination_address_prefix = "*"
   }
 
+  # Allow HTTPS traffic
   security_rule {
     name                       = "AllowHTTPS"
     priority                   = 1003
@@ -76,10 +83,11 @@ resource "azurerm_network_security_group" "honeypot_nsg" {
   }
 }
 
+# Network Interface
 resource "azurerm_network_interface" "honeypot_nic" {
   name                = "honeypot-nic"
-  location            = "West US"
-  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"
+  location            = "West US"  # Change this if needed
+  resource_group_name = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"  # Change this to your resource group name
 
   ip_configuration {
     name                          = "internal"
@@ -89,40 +97,46 @@ resource "azurerm_network_interface" "honeypot_nic" {
   }
 }
 
+# Associate NSG with Network Interface
 resource "azurerm_network_interface_security_group_association" "honeypot_nsg_assoc" {
   network_interface_id      = azurerm_network_interface.honeypot_nic.id
   network_security_group_id = azurerm_network_security_group.honeypot_nsg.id
 }
 
+# Virtual Machine Configuration
 resource "azurerm_virtual_machine" "honeypot_vm" {
   name                  = "honeypot-vm"
-  location              = "West US"
-  resource_group_name   = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"
+  location              = "West US"  # Change this if needed
+  resource_group_name   = "learn-87970c21-3bea-4bf3-a1b4-2a51da775a76"  # Change this to your resource group name
   network_interface_ids = [azurerm_network_interface.honeypot_nic.id]
-  vm_size               = "Standard_D2s_v3"
+  vm_size               = "Standard_D2s_v3"  # Change this to a different VM size if needed
 
+  # OS Disk Configuration
   storage_os_disk {
     name              = "honeypot-disk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Premium_LRS"
-    disk_size_gb      = 30
+    disk_size_gb      = 30  # Adjust disk size if needed
   }
 
+  # OS Image Reference
   storage_image_reference {
     publisher = "canonical"
     offer     = "ubuntu-24_04-lts"
     sku       = "server"
-    version   = "latest"
+    version   = "latest"  # Ensures the latest version of Ubuntu is used
   }
 
+  # OS Profile (Login Credentials)
   os_profile {
     computer_name  = "honeypot-vm"
-    admin_username = "azureuser"
-    admin_password = "YourStrongPassword123!"
+    admin_username = "azureuser"  # Change this username if needed
+    admin_password = "YourStrongPassword123!"  # Change this to a secure password
   }
 
+  # Linux Configuration
   os_profile_linux_config {
-    disable_password_authentication = false
+    disable_password_authentication = false  # Set to true if using SSH keys instead
   }
 }
