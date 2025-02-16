@@ -41,21 +41,22 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    cd SSH_Honeypot_Project_Pshitt
    ```
 
-3. **Upload Terraform File**  
+3. **Upload Terraform File**
+   
    <img src="assets/1-Uploading.png" alt="Step 1 - Upload" width="500">
    <img src="assets/2-Uploaded.png" alt="Step 2 - Confirmation" width="500">
    
-4. **Initialize Terraform**
+5. **Initialize Terraform**
    ```sh
    terraform init
    ```
 
-5. **Plan Deployment**
+6. **Plan Deployment**
    ```sh
    terraform plan
    ```
 
-6. **Deploy Infrastructure (Until the below green message displayed)**
+7. **Deploy Infrastructure (Until the below green message displayed)**
    ```sh
    terraform apply -auto-approve
    ```
@@ -177,7 +178,8 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
 2. Navigate to your **Virtual Machine**  
 3. Click on **Boot Diagnostics** (under Support + Troubleshooting)  
 4. Click **Enable** and ensure a **Storage Account** is selected  
-5. Save the settings  
+5. Save the settings
+   
    <img src="assets/7-Serial Console.png" alt="Step 7 - Serial Console" width="500">
 
 - Once Boot Diagnostics is enabled, you can:  
@@ -202,29 +204,35 @@ The infrastructure is defined in `SSH_Honeypot_Deploy.tf`. Below is an overview 
    - Azure Policy is restricting the creation of specific resources in the subscription.
    - If you are using an Azure Sandbox, deactivate the current one and activate a new sandbox. This will give you a different Subscription ID with different policies. Most probable the issue exists in the subscription policies enforced.
 - **Error: Error obtaining Authorization Token**
+  
    ```sh
    │ Error: Error obtaining Authorization Token: Error: NoCredentialProviders: no valid providers in chain.
    ``` 
    - Terraform cannot authenticate with Azure due to missing credentials.
    - **Ensure Azure CLI is Logged In:**
+  
      ```sh
      az login
      ```
    - **Set the Subscription ID (if multiple accounts are present):**
+
      ```sh
      az account set --subscription "YOUR_SUBSCRIPTION_ID"
      ```
 - **Error: A resource with the ID already exists**
+
   ```sh
   │ Error: A resource with the ID already exists - to be managed via Terraform this resource needs to be imported into the State.
   ```
    - Terraform is trying to create a resource that already exists in Azure.
    - **Import the Existing Resource into Terraform State:**
+  
      ```sh
      terraform import azurerm_resource_group.example /subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/my-rg
      ```
    - **If the Resource Should Not Exist, Manually Delete It:**
-     ```sh
+
+      ```sh
      az resource delete --ids /subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/my-rg
      ```
 - **Python Errors**
